@@ -9,38 +9,31 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import { Button, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Button } from '@mui/material';
 import { logoutFromFirebase } from '../db/auth';
 import Dashboard from './Dashboard';
 import Invoices from './Invoices';
 import Profile from './Profile';
 import AllocationList from './AllocationList';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
 
-function Copyright(props) {
-	return (
 
-		<Typography variant="body2" color="text.secondary" align="center" {...props}>
-			{'Copyright © '}
-			<Link color="inherit" href="https://mui.com/">
-				Oleg Borisov
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
+// function Copyright(props) {
+// 	return (
+
+// 		<Typography variant="body2" color="text.secondary" align="center" {...props}>
+// 			{'Copyright © '}
+// 			<Link color="inherit" href="https://mui.com/">
+// 				Oleg Borisov
+// 			</Link>{' '}
+// 			{new Date().getFullYear()}
+// 			{'.'}
+// 		</Typography>
+// 	);
+// }
 
 const drawerWidth = 240;
 

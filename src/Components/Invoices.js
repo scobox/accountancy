@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Paper, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Box, Button, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { addDataIntoFirebase, loadDataFromFirebase } from '../db/db_utils';
 import AddInvioceModal from './AddInvoiceModal';
@@ -9,9 +9,7 @@ export default function Invoices() {
 	function retriveDataFromFireBase() {
 		loadDataFromFirebase("invoices/2022")
 			.then((data) => {
-				console.log(data);
 				const invoicesInArray = Object.keys(data).map(key => { return { ...data[key], invoiceId: key } });
-				console.log(invoicesInArray);
 				setInvoices(invoicesInArray);
 			});
 	}
@@ -23,10 +21,8 @@ export default function Invoices() {
 	return (
 		<>
 			<Box sx={{ p: 2 }}>
-
 				<AddInvioceModal />
 			</Box>
-			{/* {invoices.map((invoice, index) => <div>{invoice.amount}{invoice.date} {invoice.description}</div>)} */}
 			<InvoiceTable invoiceData={invoices} retriveDataFromFireBase={retriveDataFromFireBase} />
 
 		</>
@@ -40,14 +36,13 @@ export default function Invoices() {
 
 const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
 
-	const [editInvoiceFlag, setEditInvoiceFlag] = useState(false);
 	const [allocationList, setAllocationList] = useState([]);
 	const columns = [{ label: "Date", id: "date" }, { label: "Amount", id: "amount" }, { label: "Description", id: "description", width: "25%" }, { label: "Allocation", id: "allocation", width: "25%" }, { label: "", id: "edit" }];
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 	useEffect(() => {
-		loadDataFromFirebase("allocations").then(res => { setAllocationList(res); console.log("allocations", res); });
+		loadDataFromFirebase("allocations").then(res => { setAllocationList(res); });
 
 	}, [])
 
@@ -93,13 +88,8 @@ const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
 														<TableCell
 															key={column.id}
 														>
-															{/* {column.format && typeof value === 'number'
-																		? column.format(value)
-																		: value} */}
 															{column.id !== "allocation" && row[column.id]}
 															{column.id === "allocation" &&
-
-
 																<Select
 																	size="small"
 																	labelId="demo-simple-select-filled-label"
@@ -116,7 +106,7 @@ const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
 																	</Button> */}
 																	<MenuItem value={0}>Unallocated</MenuItem>
 
-																	{allocationList.map((allocation, idx) => <MenuItem value={allocation.id}>{allocation.name}</MenuItem>)}
+																	{allocationList.map((allocation, idx) => <MenuItem key={idx} value={allocation.id}>{allocation.name}</MenuItem>)}
 																</Select>
 
 															}

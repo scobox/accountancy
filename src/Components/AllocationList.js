@@ -1,6 +1,6 @@
-import { Button, Chip, Paper, TextField, Typography } from '@mui/material';
+import { Button, Chip, Paper, TextField } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { loadDataFromFirebase, addDataIntoFirebase } from '../db/db_utils';
 
@@ -10,7 +10,6 @@ export default function AllocationList() {
 	useEffect(() => {
 		loadDataFromFirebase("allocations")
 			.then(res => {
-				console.log(res);
 				setAllocationData(res);
 			})
 	}, [mode]);
@@ -48,20 +47,9 @@ export default function AllocationList() {
 					<Button variant="contained" onClick={() => setMode(1)}>add new allocation</Button>
 				</Box>
 				<Box >
-					{allocationData.map((item, idx) => <Box sx={{ p: 1 }} id={idx}>
+					{allocationData.map((item, idx) => <Box sx={{ p: 1 }} key={idx}>
 						{(editMode.edit && editMode.elementId === idx) ?
-							// <>
-							// 	<TextField
 
-							// 		size="small"
-							// 		value={allocationData[idx].name}
-							// 		onChange={(event) => handleAllocationChange(event)}
-							// 	/>
-							// 	<Button onClick={() => {
-							// 		addDataIntoFirebase(`allocations/${editMode.elementId}`, { ...allocationData[editMode.elementId], name: "new text" });
-							// 	}}>save</Button>
-							// 	<Button onClick={() => { setEditMode({ edit: false, elementId: -1 }) }}>cancel</Button>
-							// </>
 							<EditAllocationTextField idx={idx} />
 							: (
 								<>

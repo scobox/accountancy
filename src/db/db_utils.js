@@ -18,7 +18,6 @@ export function loadDataFromFirebase(path = "") {
 		const dbRef = ref(getDatabase());
 		get(child(dbRef, `users/${userId}/${path}`)).then((snapshot) => {
 			if (snapshot.exists()) {
-				console.log(snapshot.val());
 				resolve(snapshot.val())
 			} else {
 				console.log("No data available");
@@ -33,7 +32,7 @@ export function addDataIntoFirebase(path, payload = {}) {
 	const auth = getAuth();
 	const userId = auth.currentUser.uid;
 	const db = getDatabase();
-	const currentDate = new Date();
+	// const currentDate = new Date();
 	let fullPath = 'users/' + userId + "/";
 	// 'users/' + userId + "/" + path + "/" + currentDate.getFullYear() + "/" + currentDate.getTime()
 	if (path === "profile") {

@@ -1,4 +1,4 @@
-import { getAuth, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
 
 
 export const loginToFirebaseWithEmailAndPassword = async (email, password) => {
@@ -6,7 +6,6 @@ export const loginToFirebaseWithEmailAndPassword = async (email, password) => {
 
 
 		const auth = getAuth();
-		// signInWithEmailAndPassword(auth, email, password)
 		setPersistence(auth, browserSessionPersistence)
 			.then(() => {
 				// Existing and future Auth states are now persisted in the current
@@ -18,9 +17,6 @@ export const loginToFirebaseWithEmailAndPassword = async (email, password) => {
 			})
 			.then((userCredential) => {
 				// Signed in 
-
-				// const user = userCredential.user;
-				console.log(userCredential);
 				sessionStorage.setItem('user', userCredential.user.uid);
 				resolve(true);
 
@@ -28,13 +24,10 @@ export const loginToFirebaseWithEmailAndPassword = async (email, password) => {
 					if (user) {
 						// User is signed in, see docs for a list of available properties
 						// https://firebase.google.com/docs/reference/js/firebase.User
-						const uid = user.uid;
-						console.log("logged in:", uid);
 						// ...
 					} else {
 						// User is signed out
 						// ...
-						console.log("logged out");
 						sessionStorage.removeItem("user");
 					}
 				});

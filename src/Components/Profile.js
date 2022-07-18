@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from '@mui/material'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addDataIntoFirebase, loadDataFromFirebase } from '../db/db_utils'
 
 export default function Profile() {
@@ -43,8 +43,6 @@ export default function Profile() {
 				<Button variant="contained" type="submit">Save changes</Button>
 			</Box>
 		</div>
-		{/* <Button onClick={() => loadDataFromFirebase("profile")}>Get Profile</Button>
-		<Button onClick={() => addDataIntoFirebase("profile", { name: "John", surname: "Baker" })}>Add to Profile</Button> */}
 	</>
 	)
 }

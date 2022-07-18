@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/notForShare
+src/notForShare
 /.pnp
 .pnp.js
 
