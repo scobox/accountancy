@@ -9,12 +9,12 @@ export default function csvToJson(csvString) {
 
 const transactionStringToArray = (string) => {
 	const tempArray = string.split(",");
-	console.log(tempArray);
+	// console.log(tempArray);
 	return {
 		date: tempArray[0],
 		amount: tempArray[1].slice(1, -1),
-		shopName: tempArray[2].slice(1, -1),
-		balance: tempArray[3]
+		description: tempArray[2].slice(1, -1),
+		balance: tempArray[3].slice(1, -1)
 	}
 
 }

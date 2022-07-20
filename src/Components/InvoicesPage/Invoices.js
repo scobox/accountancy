@@ -1,11 +1,15 @@
 import { Box, Button, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { addDataIntoFirebase, loadDataFromFirebase } from '../db/db_utils';
-import AddInvioceModal from './AddInvoiceModal';
+import { addDataIntoFirebase, loadDataFromFirebase } from '../../db/db_utils';
+import AddInvioceModal from '../AddInvoiceModal';
+import readFile from '../../data_utils/readFile'
+import ImportInvoicesElement from './ImportInvoicesElement';
 
 export default function Invoices() {
 
 	const [invoices, setInvoices] = useState([]);
+	const [invoicesForImport, setInvoicesForImport] = useState([]);
+	const [page, setPage] = useState(0);
 	function retriveDataFromFireBase() {
 		loadDataFromFirebase("invoices/2022")
 			.then((data) => {
@@ -14,6 +18,16 @@ export default function Invoices() {
 			});
 	}
 
+	function handleInvoiceImport() {
+		readFile().then(invoicesFromCsv => {
+			if (invoicesFromCsv) {
+				// console.log(invoicesFromCsv);
+				setInvoicesForImport(invoicesFromCsv);
+				setPage(1);
+			}
+		}
+		);
+	}
 
 	useEffect(() => {
 		retriveDataFromFireBase();
@@ -22,8 +36,11 @@ export default function Invoices() {
 		<>
 			<Box sx={{ p: 2 }}>
 				<AddInvioceModal />
+				<Button variant="contained" onClick={handleInvoiceImport} sx={{ ml: 2 }}> import csv file</Button>
 			</Box>
-			<InvoiceTable invoiceData={invoices} retriveDataFromFireBase={retriveDataFromFireBase} />
+			{page === 0 && <InvoiceTable invoiceData={invoices} retriveDataFromFireBase={retriveDataFromFireBase} />}
+			{page === 1 && <ImportInvoicesElement invoicesForImport={invoicesForImport} />}
+
 
 		</>
 	)

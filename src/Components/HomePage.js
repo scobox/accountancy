@@ -16,7 +16,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 import { Button } from '@mui/material';
 import { logoutFromFirebase } from '../db/auth';
 import Dashboard from './Dashboard';
-import Invoices from './Invoices';
+import Invoices from './InvoicesPage/Invoices';
 import Profile from './Profile';
 import AllocationList from './AllocationList';
 
