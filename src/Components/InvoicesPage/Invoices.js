@@ -4,6 +4,9 @@ import { addDataIntoFirebase, loadDataFromFirebase } from '../../db/db_utils';
 import AddInvioceModal from '../AddInvoiceModal';
 import readFile from '../../data_utils/readFile'
 import ImportInvoicesElement from './ImportInvoicesElement';
+import ModalWindow from '../ModalWindow';
+import InvoiceDeleteConrirmaion from './InvoiceDeleteConrirmaion';
+import InvoiceEditElement from './InvoiceEditElement';
 
 export default function Invoices() {
 
@@ -19,9 +22,10 @@ export default function Invoices() {
 	}
 
 	function handleInvoiceImport() {
+		console.log("handleInvoiceImport");
 		readFile().then(invoicesFromCsv => {
 			if (invoicesFromCsv) {
-				// console.log(invoicesFromCsv);
+				console.log("invoicesFromCsv", invoicesFromCsv);
 				setInvoicesForImport(invoicesFromCsv);
 				setPage(1);
 			}
@@ -54,7 +58,7 @@ export default function Invoices() {
 const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
 
 	const [allocationList, setAllocationList] = useState([]);
-	const columns = [{ label: "Date", id: "date" }, { label: "Amount", id: "amount" }, { label: "Description", id: "description", width: "25%" }, { label: "Allocation", id: "allocation", width: "25%" }, { label: "", id: "edit" }];
+	const columns = [{ label: "Date", id: "date" }, { label: "Amount", id: "amount" }, { label: "Description", id: "description", width: "25%" }, { label: "Allocation", id: "allocation" }, { label: "", id: "edit", width: "400px" }];
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -100,7 +104,6 @@ const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
 
 											<TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
 												{columns.map((column) => {
-													// 				// const value = row[column.id];
 													return (
 														<TableCell
 															key={column.id}
@@ -108,26 +111,37 @@ const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
 															{column.id !== "allocation" && row[column.id]}
 															{column.id === "allocation" &&
 																<Select
+
 																	size="small"
 																	labelId="demo-simple-select-filled-label"
 																	id="demo-simple-select-filled"
-																	style={{ width: '100%' }}
+																	style={{ width: '150px' }}
 																	value={row[column.id] ?? 0}
 																	onChange={(e) => {
 																		addDataIntoFirebase(`invoices/2022/${row.invoiceId}/allocation`, e.target.value);
 																		retriveDataFromFireBase()
 																	}}
 																>
-																	{/* <Button size="small" variant="contained">
-																		allocation
-																	</Button> */}
+
 																	<MenuItem value={0}>Unallocated</MenuItem>
 
 																	{allocationList.map((allocation, idx) => <MenuItem key={idx} value={allocation.id}>{allocation.name}</MenuItem>)}
 																</Select>
 
 															}
-															{column.id === "edit" && <Button size="small" variant="contained">edit</Button>}
+															{column.id === "edit" && (<>
+
+
+
+																<ModalWindow buttonText="Edit" >
+																	<InvoiceEditElement invoiceData={row} retriveDataFromFireBase={retriveDataFromFireBase} />
+																</ModalWindow>
+
+																<ModalWindow buttonText="Delete" >
+																	<InvoiceDeleteConrirmaion invoiceData={row} retriveDataFromFireBase={retriveDataFromFireBase} />
+																</ModalWindow>
+															</>
+															)}
 														</TableCell>
 													);
 												})}

@@ -61,7 +61,7 @@ const InvoiceTable = ({ invoiceList, setSelectedInvoices, selectedInvoices }) =>
 
 function addInvoicesIntoDb(invoiceList) {
 	invoiceList.forEach(invoice => {
-		// console.log(invoice);
+		console.log("addInvoicesIntoDb", invoice);
 		addDataIntoFirebase(`invoices/2022/${invoice.id}`, invoice);
 	})
 }

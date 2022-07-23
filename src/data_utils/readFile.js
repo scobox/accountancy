@@ -6,6 +6,7 @@ export default function readFile() {
 
 		fileOpen({ mimeTypes: ['text/csv'] })
 			.then(blob => {
+				console.log("reading file");
 				blob.text().then(res => resolve(csvToJson(res)))
 			});
 	})

@@ -29,6 +29,7 @@ export function loadDataFromFirebase(path = "") {
 	});
 }
 export function addDataIntoFirebase(path, payload = {}) {
+	console.log("addDataIntoFirebase", payload);
 	const auth = getAuth();
 	const userId = auth.currentUser.uid;
 	const db = getDatabase();
@@ -42,4 +43,17 @@ export function addDataIntoFirebase(path, payload = {}) {
 		fullPath += path;
 	}
 	set(ref(db, fullPath), payload);
+}
+
+
+export function deleteRecordInFirebase(path) {
+	console.log("deleteRecordInFirebase");
+	const auth = getAuth();
+	const userId = auth.currentUser.uid;
+	const db = getDatabase();
+
+	let fullPath = 'users/' + userId + "/invoices/2022/" + path;
+
+	set(ref(db, fullPath), null);
+	// .remove();
 }
