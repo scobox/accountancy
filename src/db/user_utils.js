@@ -9,9 +9,9 @@ export async function cteateUserInFirebaseWithEmailAndPassword(email, password, 
 				resolve(true)
 			})
 			.catch((error) => {
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				console.log(errorCode, errorMessage);
+				// const errorCode = error.code;
+				// const errorMessage = error.message;
+				// console.log(errorCode, errorMessage);
 				resolve(false);
 			});
 	})

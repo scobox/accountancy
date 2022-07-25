@@ -3,20 +3,18 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useState } from 'react'
 import { addDataIntoFirebase } from '../../db/db_utils';
 
-export default function ImportInvoicesElement({ invoicesForImport }) {
+export default function ImportInvoicesElement({ invoicesForImport, setPage: setInvoiceSubPage }) {
 	console.log(invoicesForImport);
 	const [selectedInvoices, setSelectedInvoices] = useState([]);
 	return (
 		<>
-			<div>ImportInvoicesElement</div>
-			{/* {invoicesForImport.map(invoice => <div>{invoice.description}</div>)} */}
-			<InvoiceTable invoiceList={invoicesForImport} setSelectedInvoices={setSelectedInvoices} selectedInvoices={selectedInvoices} />
+			<InvoiceTable invoiceList={invoicesForImport} setSelectedInvoices={setSelectedInvoices} selectedInvoices={selectedInvoices} setPage={setInvoiceSubPage} />
 		</>
 	)
 }
 
 
-const InvoiceTable = ({ invoiceList, setSelectedInvoices, selectedInvoices }) => {
+const InvoiceTable = ({ invoiceList, setSelectedInvoices, selectedInvoices, setPage }) => {
 	const invoiceListWithId = invoiceList.map(invoice => { return { ...invoice, id: invoice.amount.slice(1).replace(".", "-") + "-" + invoice.balance.slice(1).replace(".", "-") } });
 	console.log("processed", invoiceListWithId);
 	const columns = [
@@ -54,7 +52,8 @@ const InvoiceTable = ({ invoiceList, setSelectedInvoices, selectedInvoices }) =>
 				onSelectionModelChange={(newSelection) => { setSelectedInvoices(handleSelectionChange(newSelection, invoiceListWithId)) }}
 			/>
 			<Button variant="contained" sx={{ m: 2 }} onClick={() => { addInvoicesIntoDb(selectedInvoices) }}>Import selected</Button>
-			<Button variant="contained" onClick={() => { addInvoicesIntoDb(invoiceListWithId) }}>Import all</Button>
+			<Button variant="contained" sx={{ mr: 2 }} onClick={() => { addInvoicesIntoDb(invoiceListWithId) }}>Import all</Button>
+			<Button variant="contained" onClick={() => { setPage(0) }}>Cancel importing</Button>
 		</div>
 	);
 }

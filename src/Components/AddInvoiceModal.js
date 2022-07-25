@@ -72,7 +72,7 @@ export default function AddInvioceModal() {
 
 	return (
 		<div style={{ display: "inline-block" }}>
-			<Button onClick={handleOpen} variant="contained" >Add new invoice</Button>
+			<Button onClick={handleOpen} sx={{ mr: 2 }} variant="contained" >Add new invoice</Button>
 			<Modal
 				aria-labelledby="spring-modal-title"
 				aria-describedby="spring-modal-description"

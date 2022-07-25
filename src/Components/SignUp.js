@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { cteateUserInFirebaseWithEmailAndPassword } from '../db/user_utils';
+import { Navigate, Route } from 'react-router-dom';
 
 
 function Copyright(props) {
@@ -28,14 +29,19 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({ setLoggedin }) {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
 
 		cteateUserInFirebaseWithEmailAndPassword(data.get('email'), data.get('password'))
 			.then((result) => {
-				console.log("result", result);
+				if (result) {
+					setLoggedin(true);
+
+
+				};
+				// console.log("result", result);
 				const email = data.get('email');
 				passwordField.current.value = ""
 				passwordConfirmField.current.value = ""
@@ -43,10 +49,10 @@ export default function SignUp() {
 				!result && setUserAlreadyExists({ ...userAlreadyExists, status: true, email });
 			});
 
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
+		// console.log({
+		// 	email: data.get('email'),
+		// 	password: data.get('password'),
+		// });
 	};
 	const passwordField = React.useRef(null);
 	const passwordConfirmField = React.useRef(null);
@@ -54,9 +60,6 @@ export default function SignUp() {
 
 	const validateEmailAndPassword = () => {
 		const isEmailValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailField.current.value);
-		console.log(isEmailValid);
-		console.log("ps", passwordField.current.value);
-		console.log("confirm ps", passwordConfirmField.current.value.length);
 		if (passwordField.current.value.length < 6 || passwordConfirmField.current.value.length < 6 || !isEmailValid || passwordField.current.value !== passwordConfirmField.current.value) {
 			isPasswordAndEmailValid && setIsPasswordAndEmailValid(false);
 			return false;
@@ -64,16 +67,10 @@ export default function SignUp() {
 			!isPasswordAndEmailValid && setIsPasswordAndEmailValid(true);
 			return true;
 		}
-		console.log(passwordField.current.value);
-		console.log(passwordConfirmField.current.value);
 	}
 
 	const [userAlreadyExists, setUserAlreadyExists] = React.useState({ status: false, email: "" });
 	const [isPasswordAndEmailValid, setIsPasswordAndEmailValid] = React.useState(false);
-	// React.useEffect(() => {
-	// 	if (userAlreadyExists.status) setUserAlreadyExists({ status: false, email: "" });
-	// }, [passwordField.current.value,])
-
 	return (
 		<ThemeProvider theme={theme}>
 			<Container component="main" maxWidth="xs">
@@ -180,7 +177,7 @@ export default function SignUp() {
 						</Button>
 						<Grid container justifyContent="flex-end">
 							<Grid item>
-								<Link href="#" variant="body2">
+								<Link href="\" variant="body2">
 									Already have an account? Sign in
 								</Link>
 							</Grid>

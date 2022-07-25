@@ -56,7 +56,7 @@ export default function ModalWindow({ buttonText, children }) {
 
 	return (
 		<>
-			<Button sx={{ mr: 2 }} onClick={handleClickOpen} size="small" variant="contained">
+			<Button sx={{ mr: 2 }} onClick={handleClickOpen} variant="contained">
 				{buttonText}
 			</Button>
 			<SimpleDialog

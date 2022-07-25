@@ -18,7 +18,7 @@ function App() {
 		<div className="App">
 			<Routes>
 				<Route path="/" element={!loggedin ? <SignIn setLoggedin={setLoggedin} /> : <HomePage />} />
-				<Route path="signup" element={<SignUp />} />
+				<Route path="signup" element={!loggedin ? <SignUp setLoggedin={setLoggedin} /> : <HomePage />} />
 			</Routes>
 		</div>
 	);

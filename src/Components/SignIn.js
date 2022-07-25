@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -14,6 +12,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { loginToFirebaseWithEmailAndPassword } from '../db/auth';
 import { Link as RouterLink } from "react-router-dom";
+import ModalWindow from './ModalWindow';
+import { CircularProgress } from '@mui/material';
 
 function Copyright(props) {
 	return (
@@ -31,26 +31,32 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn({ setLoggedin }) {
+	const [loginFail, setLoginFail] = React.useState(false);
+	const [loadingInProgress, setLoadingInProgress] = React.useState(false);
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		setLoadingInProgress(true);
 		const data = new FormData(event.currentTarget);
 		loginToFirebaseWithEmailAndPassword(data.get('email'), data.get('password'))
 			.then((loginResult) => {
-				// console.log("loginResult", setLoggedin);
+				setLoadingInProgress(false);
+				if (!loginResult) {//show Login fail message
+					setLoginFail(true);
+					setTimeout(() => {
+						setLoginFail(false);
+					}, 2800)
+				}
 				setLoggedin(loginResult);
 				emailInput.current.value = "";
 				passwordInput.current.value = "";
-			}
-			);
-		// console.log({
-		// 	email: data.get('email'),
-		// 	password: data.get('password'),
-		// });
+			})
 	};
 	const emailInput = React.useRef(null);
 	const passwordInput = React.useRef(null);
 	return (
 		<ThemeProvider theme={theme}>
+
+
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<Box
@@ -90,10 +96,8 @@ export default function SignIn({ setLoggedin }) {
 							id="password"
 							autoComplete="current-password"
 						/>
-						{/* <FormControlLabel
-							control={<Checkbox value="remember" color="primary" />}
-							label="Remember me"
-						/> */}
+						{loginFail && <Typography component="h4" style={{ color: "red" }}>Login Faild - incorrect email or password, try again</Typography>}
+						{loadingInProgress && <Box style={{ display: "flex", justifyContent: "space-around" }}><CircularProgress /></Box>}
 						<Button
 							type="submit"
 							fullWidth
@@ -109,7 +113,6 @@ export default function SignIn({ setLoggedin }) {
 								</Link>
 							</Grid>
 							<Grid item>
-								{/* <Link href="#" variant="body2"> */}
 								<RouterLink to="/signup">
 									"Don't have an account? Sign Up"
 								</RouterLink>

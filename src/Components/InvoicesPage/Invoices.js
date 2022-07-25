@@ -7,12 +7,13 @@ import ImportInvoicesElement from './ImportInvoicesElement';
 import ModalWindow from '../ModalWindow';
 import InvoiceDeleteConrirmaion from './InvoiceDeleteConrirmaion';
 import InvoiceEditElement from './InvoiceEditElement';
+import AddInvoiceElement from './AddInvoiceElement';
 
 export default function Invoices() {
 
 	const [invoices, setInvoices] = useState([]);
 	const [invoicesForImport, setInvoicesForImport] = useState([]);
-	const [page, setPage] = useState(0);
+	const [invoiceSubPage, setInvoiceSubPage] = useState(0);
 	function retriveDataFromFireBase() {
 		loadDataFromFirebase("invoices/2022")
 			.then((data) => {
@@ -27,7 +28,7 @@ export default function Invoices() {
 			if (invoicesFromCsv) {
 				console.log("invoicesFromCsv", invoicesFromCsv);
 				setInvoicesForImport(invoicesFromCsv);
-				setPage(1);
+				setInvoiceSubPage(1);
 			}
 		}
 		);
@@ -38,12 +39,9 @@ export default function Invoices() {
 	}, []);
 	return (
 		<>
-			<Box sx={{ p: 2 }}>
-				<AddInvioceModal />
-				<Button variant="contained" onClick={handleInvoiceImport} sx={{ ml: 2 }}> import csv file</Button>
-			</Box>
-			{page === 0 && <InvoiceTable invoiceData={invoices} retriveDataFromFireBase={retriveDataFromFireBase} />}
-			{page === 1 && <ImportInvoicesElement invoicesForImport={invoicesForImport} />}
+
+			{invoiceSubPage === 0 && <InvoiceTable invoiceData={invoices} retriveDataFromFireBase={retriveDataFromFireBase} handleInvoiceImport={handleInvoiceImport} setInvoiceSubPage={setInvoiceSubPage} />}
+			{invoiceSubPage === 1 && <ImportInvoicesElement invoicesForImport={invoicesForImport} setInvoiceSubPage={setInvoiceSubPage} />}
 
 
 		</>
@@ -55,7 +53,7 @@ export default function Invoices() {
 
 
 
-const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
+const InvoiceTable = ({ invoiceData, retriveDataFromFireBase, handleInvoiceImport }) => {
 
 	const [allocationList, setAllocationList] = useState([]);
 	const columns = [{ label: "Date", id: "date" }, { label: "Amount", id: "amount" }, { label: "Description", id: "description", width: "25%" }, { label: "Allocation", id: "allocation" }, { label: "", id: "edit", width: "400px" }];
@@ -77,7 +75,14 @@ const InvoiceTable = ({ invoiceData, retriveDataFromFireBase }) => {
 	};
 	return (
 		<>
-			<Paper sx={{ width: '100%', overflow: 'hidden', border: "1px solid black" }}>
+			<Box sx={{ p: 2 }}>
+				{/* <AddInvioceModal /> */}
+				<ModalWindow buttonText="Add new invoice"  >
+					<AddInvoiceElement refreshData={retriveDataFromFireBase} />
+				</ModalWindow>
+				<Button variant="contained" onClick={handleInvoiceImport} sx={{ mr: 2 }}> import csv file</Button>
+			</Box>
+			<Paper sx={{ width: '100%', overflow: 'hidden' }}>
 				<TableContainer sx={{ maxHeight: "70vh" }} component={Paper}>
 					<Table stickyHeader aria-label="a dense table" size="small" >
 						<TableHead>
