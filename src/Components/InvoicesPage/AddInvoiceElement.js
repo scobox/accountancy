@@ -5,7 +5,7 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 export default function AddInvoiceElement({ refreshData, handleClose }) {
-	const [newInvoiceData, setNewInvoiceData] = React.useState({ date: "", amount: "", description: "" });
+	const [newInvoiceData, setNewInvoiceData] = React.useState({ date: "", amount: "", description: "", allocation: 0 });
 	const [areInpitsValid, setAreInpitsValid] = React.useState(false);
 
 	useEffect(() => {

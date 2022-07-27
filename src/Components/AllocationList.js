@@ -87,8 +87,7 @@ export default function AllocationList() {
 
 	function handleSave({ event, text }) {
 		event.preventDefault();
-		console.log(text);
-		addDataIntoFirebase(`allocations/${allocationData.length}`, { name: text, id: allocationData.length });
+		addDataIntoFirebase(`allocations/${allocationData.length || 1}`, { name: text, id: allocationData.length || 1 });
 		setMode(0);
 	}
 

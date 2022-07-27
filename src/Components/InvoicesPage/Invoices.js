@@ -23,10 +23,8 @@ export default function Invoices() {
 	}
 
 	function handleInvoiceImport() {
-		console.log("handleInvoiceImport");
 		readFile().then(invoicesFromCsv => {
 			if (invoicesFromCsv) {
-				console.log("invoicesFromCsv", invoicesFromCsv);
 				setInvoicesForImport(invoicesFromCsv);
 				setInvoiceSubPage(1);
 			}

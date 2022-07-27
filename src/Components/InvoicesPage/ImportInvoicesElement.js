@@ -3,20 +3,18 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useState } from 'react'
 import { addDataIntoFirebase } from '../../db/db_utils';
 
-export default function ImportInvoicesElement({ invoicesForImport, setPage: setInvoiceSubPage }) {
-	console.log(invoicesForImport);
+export default function ImportInvoicesElement({ invoicesForImport, setInvoiceSubPage }) {
 	const [selectedInvoices, setSelectedInvoices] = useState([]);
 	return (
 		<>
-			<InvoiceTable invoiceList={invoicesForImport} setSelectedInvoices={setSelectedInvoices} selectedInvoices={selectedInvoices} setPage={setInvoiceSubPage} />
+			<InvoiceTable invoiceList={invoicesForImport} setSelectedInvoices={setSelectedInvoices} selectedInvoices={selectedInvoices} setInvoiceSubPage={setInvoiceSubPage} />
 		</>
 	)
 }
 
 
-const InvoiceTable = ({ invoiceList, setSelectedInvoices, selectedInvoices, setPage }) => {
+const InvoiceTable = ({ invoiceList, setSelectedInvoices, selectedInvoices, setInvoiceSubPage }) => {
 	const invoiceListWithId = invoiceList.map(invoice => { return { ...invoice, id: invoice.amount.slice(1).replace(".", "-") + "-" + invoice.balance.slice(1).replace(".", "-") } });
-	console.log("processed", invoiceListWithId);
 	const columns = [
 		{ field: 'date', headerName: 'Date', width: 90 },
 		{ field: 'amount', headerName: 'Amount', width: 150 },
@@ -53,7 +51,7 @@ const InvoiceTable = ({ invoiceList, setSelectedInvoices, selectedInvoices, setP
 			/>
 			<Button variant="contained" sx={{ m: 2 }} onClick={() => { addInvoicesIntoDb(selectedInvoices) }}>Import selected</Button>
 			<Button variant="contained" sx={{ mr: 2 }} onClick={() => { addInvoicesIntoDb(invoiceListWithId) }}>Import all</Button>
-			<Button variant="contained" onClick={() => { setPage(0) }}>Cancel importing</Button>
+			<Button variant="contained" onClick={() => { setInvoiceSubPage(0) }}>Cancel importing</Button>
 		</div>
 	);
 }
